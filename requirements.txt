@@ -1,0 +1,16 @@
+# INT396 Unsupervised Learning - Hyperspectral Disease Feature Analyzer
+# Core Scientific & ML Dependencies
+numpy>=1.26.0
+pandas>=2.1.0
+scipy>=1.12.0
+scikit-learn>=1.4.0
+umap-learn>=0.5.5
+joblib>=1.3.2
+
+# Visualization & App
+matplotlib>=3.8.0
+seaborn>=0.13.0
+streamlit>=1.32.0
+
+# Testing & Quality
+pytest>=8.0.0
