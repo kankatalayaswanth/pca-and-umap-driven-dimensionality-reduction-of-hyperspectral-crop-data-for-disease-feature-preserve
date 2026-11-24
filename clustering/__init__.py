@@ -1,0 +1,3 @@
+# Clustering module
+from clustering.kmeans_model import fit_single_kmeans, run_tri_representation_clustering
+from clustering.cluster_analysis import compute_k_analysis, compute_multi_representation_k_analysis

@@ -4,26 +4,39 @@ __pycache__/
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
 # Virtual environments
-.venv/
 venv/
-ENV/
 env/
+ENV/
+.env
 
-# Jupyter
-.ipynb_checkpoints/
-*/.ipynb_checkpoints/*
-
-# Testing & coverage
+# Numba & temporary caches
+.numba_cache/
 .pytest_cache/
-.coverage
-htmlcov/
 
-# Operating system artifacts
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.swo
 .DS_Store
 Thumbs.db
-ehthumbs.db
 
-# Streamlit local state
-.streamlit/secrets.toml
+# User data & downloads
+*.csv.tmp

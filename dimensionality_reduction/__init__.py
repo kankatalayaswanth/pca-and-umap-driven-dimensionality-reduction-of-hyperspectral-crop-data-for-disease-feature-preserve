@@ -1,0 +1,3 @@
+# Dimensionality Reduction module
+from dimensionality_reduction.pca_model import run_pca_reduction
+from dimensionality_reduction.umap_model import run_umap_reduction

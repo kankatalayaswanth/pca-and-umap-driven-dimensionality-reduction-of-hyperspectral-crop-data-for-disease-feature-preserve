@@ -1,269 +1,159 @@
-# Hyperspectral Disease Feature Analyzer
-### PCA & UMAP-Driven Dimensionality Reduction of Hyperspectral Crop Data for Disease-Relevant Feature Preservation
+# PCA and UMAP-Driven Dimensionality Reduction of Hyperspectral Crop Data for Disease-Relevant Feature Preservation
 
-**Course Code:** INT396 — Unsupervised Learning  
-**Project Category:** University Machine Learning Research Application  
-**Target Domain:** Precision Agriculture & Hyperspectral Plant Pathology  
-
-[![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-blue.svg)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.32+-red.svg)](https://streamlit.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-16%20Passed-brightgreen.svg)]()
+**Course:** INT396 – Unsupervised Learning  
+**Project Type:** Unsupervised Machine Learning & Dimensionality Reduction Benchmark  
+**Framework:** Python 3.12 / Streamlit / scikit-learn / umap-learn / Plotly / pandas  
 
 ---
 
-## 1. Project Overview & Problem Statement
+## 🌾 Project Overview
 
-Modern airborne and push-broom hyperspectral imaging systems capture continuous, narrow spectral bands across the electromagnetic spectrum (Visible, Near-Infrared, and Short-Wave Infrared). While hyperspectral sensors capture subtle biochemical disruptions (chlorosis, mesophyll cellular damage, stomatal closure) induced by plant pathogens and pests before symptoms become visible to the human eye, high-dimensional spectral data presents severe analytical challenges:
-1. **The Curse of Dimensionality:** High feature-to-sample ratio, sparse feature spaces, and degradation of Euclidean distance metrics.
-2. **Spectral Multicollinearity:** Extremely high mutual correlation between contiguous narrow bands.
-3. **Sensor Noise & Redundancy:** Water absorption bands and atmospheric scattering introduce noise that interferes with distance-based cluster discovery.
+High-dimensional hyperspectral and multispectral imaging sensors capture dozens to hundreds of narrow, contiguous spectral reflectance bands across ultraviolet (UV), visible (VIS), red-edge, near-infrared (NIR), and short-wave infrared (SWIR) wavelengths. While these narrow spectral bands record subtle biochemical and physiological changes in crop canopies (such as chlorophyll breakdown, carotenoid fluctuations, cell wall collapse, and moisture depletion induced by fungal, bacterial, or pest pathogens), they exhibit severe **inter-band collinearity**, high computational complexity, and the **curse of dimensionality**.
 
-### Central Research Question:
-> **"Does linear (PCA) or non-linear manifold (UMAP) dimensionality reduction preserve, enhance, or degrade disease-relevant cluster structure compared to original raw hyperspectral bands?"**
-
----
-
-## 2. Project Objectives
-
-1. **Preprocess high-dimensional spectral signatures** without data leakage using Scikit-Learn Pipelines.
-2. **Apply PCA and UMAP** to reduce spectral dimensionality while preserving plant pathology structure.
-3. **Benchmark downstream clustering (K-Means, Agglomerative Hierarchical, DBSCAN)** across:
-   - **Raw Hyperspectral Bands (Baseline)**
-   - **PCA-Reduced Features**
-   - **UMAP-Reduced Features**
-4. **Evaluate performance** using both internal unsupervised metrics (Silhouette, Calinski-Harabasz, Davies-Bouldin) and external ground-truth validation (Adjusted Rand Index, Normalized Mutual Information).
-5. **Physically interpret top spectral wavelengths** linking mathematical loadings to physiological plant biology (Red Edge, Chlorophyll Absorption, NIR Spongy Mesophyll Scattering).
+This university project application implements a complete, end-to-end unsupervised machine learning pipeline designed to:
+1. **Preprocess** high-dimensional hyperspectral pixel reflectance data (imputation, z-score/min-max scaling, zero-variance band pruning, and duplicate row removal).
+2. **Apply Linear PCA** to project spectral data onto orthogonal principal axes that maximize global variance retention.
+3. **Apply Non-linear UMAP** using Riemannian geometry and fuzzy simplicial sets to preserve local neighborhood manifolds.
+4. **Benchmark Downstream Clustering**: Execute independent K-Means clustering across the **Preprocessed Raw Bands**, **PCA-reduced features**, and **UMAP-embedded features**.
+5. **Evaluate Rigorously**: Calculate unsupervised internal metrics (Silhouette Score, Davies-Bouldin Index, Calinski-Harabasz Index) and external ground-truth validation metrics (Adjusted Rand Index, Normalized Mutual Information, and Contingency Matrices) when disease labels are available.
+6. **Synthesize Findings**: Dynamically generate evidence-based academic interpretations and export all transformed matrices, cluster labels, and formal markdown reports.
 
 ---
 
-## 3. Real Dataset & Provenance
+## 🔒 Academic Integrity & Live Computation Guarantee
 
-This application uses real, peer-reviewed scientific hyperspectral datasets. **No synthetic data is fabricated.**
-
-### Primary Dataset: Potato Crop Biotic & Abiotic Stress (Zenodo 14267877, 2024)
-- **Title:** *Hyperspectral imaging dataset of potato plants exposed to water-deficient and nematode induced stress*
-- **Authors:** Janez Lapajne, Nik Susič, Andrej Vončina, Uroš Žibrat (Agricultural Institute of Slovenia, Plant Protection Department)
-- **Publication Date:** December 3, 2024
-- **DOI:** [10.5281/zenodo.14267877](https://doi.org/10.5281/zenodo.14267877)
-- **License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
-- **Sensors:** HySpex VNIR-1600 (160 bands, $409.8 - 988.4\text{ nm}$) and HySpex SWIR-384 (288 bands, $950.0 - 2509.6\text{ nm}$).
-- **Crop:** Potato (*Solanum tuberosum*, cultivar Désirée).
-- **Disease & Stress Conditions:**
-  - `Healthy Control`: Well-watered, uninfected baseline.
-  - `Biotic Nematode Disease`: Inoculated with potato cyst nematodes (*Globodera pallida* and *Globodera rostochiensis*) at low (5 eggs/$\text{cm}^3$) and high (30 eggs/$\text{cm}^3$) inoculum doses.
-  - `Abiotic Drought Stress`: Water withholding 3-5 days prior to imaging.
-  - `Combined Stress`: Co-occurring drought and nematode infestation.
-- **Disease Progression Lifecycle:** Tracked across 3 developmental sessions:
-  - DAI 10: Early asymptomatic phase (juvenile root penetration; no visible foliage symptoms).
-  - DAI 40: Active metabolic disturbance phase.
-  - DAI 70: Mature symptomatic phase (cyst formation, severe root disruption, foliar chlorosis).
-
-### Secondary Benchmark: AVIRIS Indian Pines Agricultural Scene
-- **Sensor:** NASA / JPL Airborne Visible / Infrared Imaging Spectrometer (AVIRIS).
-- **Spectral Bands:** 200 calibrated channels ($0.4 - 2.5\text{ µm}$).
-- **Samples:** 3,129 labeled agricultural pixels across 16 crop and vegetation categories.
+- **Zero Synthetic Data / No "Demo Mode":** In strict accordance with course guidelines, this application does **not** generate synthetic hyperspectral data or substitute placeholder datasets.
+- **Genuine Computation:** Every metric, explained variance ratio, cluster label, and chart is calculated on demand from the dataset you upload.
+- **Clear Empty State:** When no file has been uploaded, execution controls remain securely disabled with clear upload prompts.
 
 ---
 
-## 4. Technology Stack
+## 📂 Supported Dataset Formats
 
-- **Core ML & Computing:** Python 3.11+, NumPy, Pandas, Scikit-learn, SciPy, UMAP-learn, Joblib.
-- **Visualization:** Matplotlib, Seaborn (academic clean aesthetics: white background, clean borders, zero AI glow).
-- **Web Application:** Streamlit.
-- **Automated Testing:** Pytest (16 automated unit/integration tests).
-- **Version Control & Environment:** Git, GitHub, venv.
-
----
-
-## 5. System Architecture & ML Lifecycle
-
-```
-Raw Hyperspectral Data (.CSV / .MAT / Zenodo)
-                     │
-                     ▼
-          Data Quality Validation
-     (Nulls, Infs, Range, Constant Bands)
-                     │
-                     ▼
-       Exploratory Data Analysis (EDA)
-  (Mean Spectral Curves ± 1σ, Band Variance)
-                     │
-                     ▼
-        Preprocessing Pipeline (Leakage-Free)
-  (SimpleImputer → VarianceThreshold → StandardScaler)
-                     │
-         ┌───────────┴───────────┐
-         ▼                       ▼
-    Linear PCA            Non-Linear UMAP
-(Global Orthogonal)    (Topological Manifold)
-         │                       │
-         └───────────┬───────────┘
-                     │
-                     ▼
-     Three Parallel Feature Spaces:
-     1. Raw Standardized Spectral Bands (Baseline)
-     2. PCA Features (Top k Principal Components)
-     3. UMAP Embedding (2D Manifold Coordinates)
-                     │
-                     ▼
-        Clustering Benchmark Studio
-     (K-Means, Agglomerative, DBSCAN)
-                     │
-                     ▼
-          Evaluation Engine
-   ┌───────────────────────────────────┐
-   │ Internal: Silhouette, CH, DB      │
-   │ External: ARI, NMI vs Ground Truth│
-   └─────────────────┬─────────────────┘
-                     │
-                     ▼
-   Explainability & Spectral Loadings
-   (Red Edge, Chlorophyll, NIR Mesophyll)
-                     │
-                     ▼
-   Experiment Logging & Model Deployment
-```
+The application accepts standard tabular hyperspectral reflectance datasets in:
+- **CSV** (`.csv`) with automatic delimiter detection (comma, semicolon, tab).
+- **Excel** (`.xlsx`, `.xls`).
+- **Apache Parquet** (`.parquet`, `.pq`).
 
 ---
 
-## 6. Experimental Results & Benchmarking Matrix
+## 🚀 Quick Start Guide
 
-Evaluated on Day 70 symptomatic potato crop data (160 VNIR bands, 70 samples, 4 disease classes):
-
-| Feature Space | Clustering Method | Silhouette Score (↑) | Calinski-Harabasz (↑) | Davies-Bouldin (↓) | ARI vs Disease (↑) | NMI vs Disease (↑) |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Raw Bands (Baseline)** | K-Means | 0.246 | 29.74 | 1.294 | 0.017 | 0.079 |
-| **Raw Bands (Baseline)** | Agglomerative (Ward) | 0.231 | 26.51 | 1.342 | 0.024 | 0.088 |
-| **PCA Features ($k=5$)** | K-Means | **0.252** | **31.18** | **1.261** | **0.028** | **0.091** |
-| **PCA Features ($k=5$)** | Agglomerative (Ward) | 0.239 | 27.84 | 1.312 | 0.025 | 0.089 |
-| **UMAP Embedding (2D)** | K-Means | **0.412** | **68.45** | **0.814** | 0.035 | **0.114** |
-| **UMAP Embedding (2D)** | Agglomerative (Ward) | 0.389 | 59.20 | 0.887 | **0.041** | 0.108 |
-
-### Key Experimental Insights:
-1. **PCA achieves 96.9% feature compression** (160 bands $\rightarrow$ 5 components) while explaining **94.00%** of total variance with a negligible reconstruction MSE of **0.01319**. Downstream clustering improves slightly over the raw baseline because PCA filters out high-frequency sensor noise.
-2. **UMAP achieves the highest geometric separation** (Silhouette $0.412$, Davies-Bouldin $0.814$), successfully separating severe stress from controls. However, distances in UMAP space reflect neighborhood topology rather than original linear reflectance amplitudes.
-3. **Biological Alignment:** Unsupervised cluster boundaries partially align with disease states, but show overlap between pure drought and nematode infection, reflecting shared physiological symptoms (vascular impairment).
-
----
-
-## 7. Explainability & Biophysical Grounding
-
-Unlike black-box models, this system provides direct biophysical interpretation of spectral loadings:
-- **PC1 Loadings Peak in NIR Plateau ($905 - 925\text{ nm}$):** Nematode root feeding disrupts water transport, causing cellular dehydration, turgor loss, and cell wall collapse in the spongy mesophyll.
-- **PC2 Loadings Peak in Red Edge ($705 - 725\text{ nm}$) & Red Absorption ($670\text{ nm}$):** Driven by chlorophyll degradation and foliar chlorosis during prolonged disease expression.
-
----
-
-## 8. Installation & Local Execution
-
-### Prerequisites:
-- Python 3.11 or 3.12
-- Git
-
-### Step-by-Step Setup:
+### 1. Requirements & Dependencies
+Ensure your Python environment has the necessary libraries:
 ```bash
-# 1. Clone the repository
-git clone https://github.com/your-username/hyperspectral-disease-analyzer.git
-cd hyperspectral-disease-analyzer
+pip install streamlit scikit-learn umap-learn plotly pandas numpy openpyxl pyarrow tabulate
+```
 
-# 2. Create and activate a Python virtual environment
-python -m venv venv
-# On Windows:
-venv\Scripts\activate
-# On Linux/macOS:
-source venv/bin/activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Run automated test suite
-python -m pytest tests/
-
-# 5. Launch the Streamlit application
+### 2. Launch the Application
+Run the Streamlit application from the project root directory:
+```bash
 streamlit run app.py
 ```
+Open your web browser and navigate to `http://localhost:8501`.
 
-The web dashboard will open in your default browser at `http://localhost:8501`.
-
----
-
-## 9. Deployment Guide (Streamlit Community Cloud)
-
-1. Push this repository to GitHub.
-2. Go to [share.streamlit.io](https://share.streamlit.io/).
-3. Connect your GitHub account and select this repository.
-4. Set Main file path to `app.py`.
-5. Deploy! The application includes all preprocessed real datasets and requirements.
-
----
-
-## 10. Project Structure
-
+### 3. Run Automated Tests
+Execute the end-to-end test suite:
+```bash
+python tests/test_pipeline.py
 ```
-hyperspectral-disease-analyzer/
-├── app.py                          # Main Streamlit web application
-├── requirements.txt                # Production dependencies
-├── README.md                       # Comprehensive project documentation
-├── LICENSE                         # MIT License
-├── .gitignore                      # Git exclusion rules
-│
-├── data/
-│   ├── raw/                        # Original raw files (Zenodo, AVIRIS)
-│   ├── processed/                  # Clean, calibrated tabular datasets
-│   └── README.md                   # Provenance & dataset documentation
-│
-├── src/                            # Modular ML source code
+
+---
+
+## 🧭 Workflow & Page Guide
+
+The application features a persistent left navigation sidebar with live progress tracking across 9 structured pages:
+
+1. **Dashboard (`p01_dashboard.py`):** High-level pipeline status tracker, step-by-step progress indicator, and project objectives.
+2. **Dataset Upload & Exploration (`p02_dataset.py`):** File upload, automatic dimensional inspection, band selection, optional disease label assignment, ID exclusion, mean spectral signature curve, band correlation heatmap, and distribution analysis.
+3. **Preprocessing Pipeline (`p03_preprocessing.py`):** Configurable missing-value imputation (mean/median/row drop), feature scaling (`StandardScaler`, `MinMaxScaler`, none), zero-variance band removal, duplicate pruning, and Before vs. After audit table.
+4. **PCA Dimensionality Reduction (`p04_pca.py`):** Target variance thresholding (e.g., 90%, 95%, 99%) or manual component counts, Scree plot, cumulative variance curve, 2D/3D projections, and spectral band loadings.
+5. **UMAP Manifold Learning (`p05_umap.py`):** Hyperparameter tuning (`n_neighbors`, `min_dist`, `metric`, `n_components`, `random_state`), 2D/3D manifold projections, and topological neighborhood preservation.
+6. **K-Means Clustering (`p06_clustering.py`):** Empirical cluster number analysis (Elbow WCSS and Silhouette score curves across $K$), independent K-Means execution across Raw, PCA, and UMAP, and cluster size distributions.
+7. **Comparative Benchmarking (`p07_comparison.py`):** Unified comparison table (Raw vs PCA vs UMAP), grouped bar charts, and contingency cross-tabulations.
+8. **Interactive Visualizations (`p08_visualization.py`):** Multi-view side-by-side projections contrasting discovered clusters against true disease classes.
+9. **Results & Dynamic Report (`p09_results.py`):** Complete experiment configuration recap, dynamically formulated scientific findings, and download center for CSV datasets, benchmark summaries, and Markdown lab reports.
+
+---
+
+## 🏗️ Project Directory Structure
+
+```text
+INT396 Hyperspectral PCA UMAP Crop Disease/
+├── app.py                     # Main Streamlit application and router
+├── README.md                  # Comprehensive documentation and lab guide
+├── config/
 │   ├── __init__.py
-│   ├── data_loader.py              # Modular dataset ingestion
-│   ├── data_validation.py          # Data integrity & schema verification
-│   ├── preprocessing.py            # Leakage-free Scikit-learn Pipeline
-│   ├── eda.py                      # Statistical EDA & spectral curves
-│   ├── pca.py                      # PCA reduction & loadings
-│   ├── umap_reduction.py           # UMAP manifold projection
-│   ├── clustering.py               # K-Means, Agglomerative, DBSCAN
-│   ├── evaluation.py               # Internal & external validation metrics
-│   ├── optimization.py             # Hyperparameter grid searches
-│   ├── interpretation.py           # Biophysical domain interpretation
-│   └── experiment_tracker.py       # JSON/CSV experiment audit logging
-│
-├── notebooks/                      # Course demonstration notebooks
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_preprocessing.ipynb
-│   ├── 03_pca_umap.ipynb
-│   └── 04_clustering_evaluation.ipynb
-│
-├── tests/                          # Automated Pytest suite (16 tests)
-│   ├── test_data.py
-│   ├── test_preprocessing.py
-│   ├── test_reduction.py
-│   └── test_clustering.py
-│
-└── docs/                           # In-depth technical documentation
-    ├── methodology.md              # Algorithmic & mathematical derivations
-    ├── dataset.md                  # Botanical & sensor metadata
-    └── experiments.md              # Experimental results & error analysis
+│   └── settings.py            # App settings, theme constants, metric definitions
+├── data/
+│   ├── __init__.py
+│   ├── loader.py              # CSV, Excel, Parquet loading, inspection & metadata
+│   └── validator.py           # Dataset validation, checks, warnings
+├── preprocessing/
+│   ├── __init__.py
+│   └── pipeline.py            # Missing value imputer, scalers, zero-var removal, duplicates
+├── dimensionality_reduction/
+│   ├── __init__.py
+│   ├── pca_model.py           # scikit-learn PCA, explained variance, threshold selection
+│   └── umap_model.py          # umap.UMAP, parameter validation, embedding computation
+├── clustering/
+│   ├── __init__.py
+│   ├── kmeans_model.py        # Independent K-Means on Raw, PCA, and UMAP
+│   └── cluster_analysis.py    # Elbow method (inertia) & Silhouette analysis across K
+├── evaluation/
+│   ├── __init__.py
+│   ├── metrics.py             # Silhouette, DB, CH, ARI, NMI, contingency
+│   └── comparator.py          # Unified benchmark table & dynamic findings generator
+├── visualization/
+│   ├── __init__.py
+│   ├── spectral_plots.py      # Hyperspectral signature curves, band histograms, heatmap
+│   ├── projection_plots.py    # 2D & 3D PCA and UMAP interactive Plotly projections
+│   └── evaluation_plots.py    # Scree plot, cumulative variance, elbow, metrics bar charts
+├── components/
+│   ├── __init__.py
+│   ├── sidebar.py             # Navigation sidebar, experiment status badge
+│   ├── status_tracker.py      # Pipeline step status indicator
+│   └── styles.py              # Professional scientific CSS
+├── views/
+│   ├── __init__.py
+│   ├── p01_dashboard.py       # Experiment status dashboard, pipeline overview
+│   ├── p02_dataset.py         # File upload, inspection, band/label/ID selection
+│   ├── p03_preprocessing.py   # Preprocessing configuration, execution, before/after
+│   ├── p04_pca.py             # PCA configuration, variance threshold, scree, 2D/3D
+│   ├── p05_umap.py            # UMAP configuration, manifold embedding, 2D/3D
+│   ├── p06_clustering.py      # K-Means configuration, Elbow & Silhouette, execution
+│   ├── p07_comparison.py      # Benchmark table (Raw vs PCA vs UMAP), metrics charts
+│   ├── p08_visualization.py   # Multi-view cluster & disease label projections
+│   └── p09_results.py         # Final summary, dynamic scientific interpretation, downloads
+├── utils/
+│   ├── __init__.py
+│   ├── state.py               # Session state management & serialization
+│   └── exporter.py            # Exporting CSV, JSON, Markdown reports
+└── tests/
+    └── test_pipeline.py       # Automated unit & integration tests
 ```
 
 ---
 
-## 11. Viva Defense Preparation (Key Questions & Answers)
+## 🔬 Mathematical Formulations & Evaluation Metrics
 
-- **Q1: Why benchmark against the Raw spectral bands?**  
-  *Answer:* To objectively verify whether dimensionality reduction helps or hurts. Without a raw baseline, we cannot claim that PCA or UMAP preserves or enhances cluster structure.
-- **Q2: Why use both internal and external evaluation metrics?**  
-  *Answer:* Internal metrics (Silhouette, Calinski-Harabasz, Davies-Bouldin) evaluate geometric compactness and separation without needing labels. External metrics (ARI, NMI) measure how well those unsupervised clusters align with biological disease classes.
-- **Q3: How is data leakage prevented?**  
-  *Answer:* Preprocessing scalers (e.g. `StandardScaler`) learn parameters ($\mu, \sigma^2$) strictly from the training split and are applied downstream via `Pipeline.transform()`.
-- **Q4: Why does UMAP achieve higher Silhouette scores than PCA?**  
-  *Answer:* UMAP explicitly optimizes a non-linear objective that pulls nearest neighbors together while pushing distant points apart, forming tighter visual clusters. PCA is constrained to orthogonal linear projections of global variance.
+### 1. Principal Component Analysis (PCA)
+Given standardized hyperspectral matrix $\mathbf{X} \in \mathbb{R}^{N \times D}$, PCA solves the eigendecomposition of the sample covariance matrix $\mathbf{\Sigma} = \frac{1}{N-1}\mathbf{X}^T\mathbf{X}$:
+$$\mathbf{\Sigma}\mathbf{v}_i = \lambda_i\mathbf{v}_i, \quad \lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_D \ge 0$$
+The cumulative explained variance ratio for $k$ components is:
+$$\text{Retained Variance} = \frac{\sum_{i=1}^k \lambda_i}{\sum_{j=1}^D \lambda_j}$$
 
----
+### 2. Silhouette Score (Internal Metric)
+For sample $i$ with intra-cluster distance $a(i)$ and nearest neighboring cluster distance $b(i)$:
+$$s(i) = \frac{b(i) - a(i)}{\max(a(i), b(i))}, \quad s(i) \in [-1, 1]$$
 
-## 12. References
+### 3. Davies-Bouldin Index (Internal Metric)
+Evaluates cluster overlap where $R_{ij} = \frac{s_i + s_j}{d(c_i, c_j)}$ ($s_i$ is cluster dispersion, $d(c_i, c_j)$ is centroid distance):
+$$DB = \frac{1}{K}\sum_{i=1}^K \max_{j \ne i} R_{ij}, \quad DB \in [0, \infty) \text{ (Lower is better)}$$
 
-1. **Lapajne, J., Susič, N., Vončina, A., & Žibrat, U. (2024).** *Hyperspectral imaging dataset of potato plants exposed to water-deficient and nematode induced stress.* Zenodo. [DOI: 10.5281/zenodo.14267877](https://doi.org/10.5281/zenodo.14267877).
-2. **McInnes, L., Healy, J., & Melville, J. (2018).** *UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction.* arXiv preprint arXiv:1802.03426.
-3. **Jolliffe, I. T., & Cadima, J. (2016).** *Principal component analysis: a review and recent developments.* Philosophical Transactions of the Royal Society A, 374(2065), 20150202.
-4. **Rousseeuw, P. J. (1987).** *Silhouettes: A graphical aid to the interpretation and validation of cluster analysis.* Journal of Computational and Applied Mathematics, 20, 53-65.
-5. **Baumgardner, M. F., et al. (2015).** *220 Band AVIRIS Hyperspectral Image Data Set: Indian Pines.* Purdue University Research Repository.
+### 4. Calinski-Harabasz Index (Variance Ratio Criterion)
+$$CH = \frac{\text{Tr}(\mathbf{B}_K) / (K - 1)}{\text{Tr}(\mathbf{W}_K) / (N - K)}, \quad \text{(Higher is better)}$$
+
+### 5. Adjusted Rand Index (External Metric)
+Given ground-truth classes $Y$ and cluster assignments $C$, ARI measures pair-wise agreements corrected for chance:
+$$ARI = \frac{\sum_{ij}\binom{n_{ij}}{2} - \left[\sum_i \binom{a_i}{2}\sum_j \binom{b_j}{2}\right] / \binom{N}{2}}{\frac{1}{2}\left[\sum_i \binom{a_i}{2} + \sum_j \binom{b_j}{2}\right] - \left[\sum_i \binom{a_i}{2}\sum_j \binom{b_j}{2}\right] / \binom{N}{2}}$$

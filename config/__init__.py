@@ -1,0 +1,5 @@
+# Config module
+from config.settings import (
+    APP_TITLE, APP_SUBTITLE, COURSE_CODE, PROJECT_TYPE,
+    PAGES, COLORS, QUALITATIVE_PALETTE, METRIC_DEFINITIONS
+)
