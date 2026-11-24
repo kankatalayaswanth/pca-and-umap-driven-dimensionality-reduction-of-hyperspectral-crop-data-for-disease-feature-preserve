@@ -1,0 +1,1 @@
+# pca-and-umap-driven-dimensionality-reduction-of-hyperspectral-crop-data-for-disease-feature-preserve
